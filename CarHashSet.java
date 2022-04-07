@@ -7,39 +7,39 @@ public class CarHashSet implements CarSet {
 
     @Override
     public boolean add(Car car) {
-        if (size >= array.length * LOAD_FACTOR) {
+        if (size >= (array.length * LOAD_FACTOR)) {
             increaseArray();
         }
         boolean added = add(car, array);
-        if(added) {
+        if (added) {
             size++;
         }
         return added;
     }
 
-    private boolean add(Car car, Entry[] dst ) {
+    private boolean add(Car car, Entry[] dst) {
         int position = getElementPosition(car, dst.length);
-        if(dst[position] == null) {
+        if (dst[position] == null) {
             Entry entry = new Entry(car, null);
             dst[position] = entry;
             return true;
-        }else {
-            Entry exsidtedElement = dst[position];
+        } else {
+            Entry existedElement = dst[position];
             while (true) {
-                if (exsidtedElement.value.equals(car)) {
+                if (existedElement.value.equals(car)) {
                     return false;
-                } else if (exsidtedElement.next == null) {
-                    exsidtedElement.next = new Entry(car, null);
+                } else if (existedElement.next == null) {
+                    existedElement.next = new Entry(car, null);
                     return true;
                 } else {
-                    exsidtedElement = exsidtedElement.next;
+                    existedElement = existedElement.next;
                 }
             }
         }
     }
 
     @Override
-    public boolean removed(Car car) {
+    public boolean remove(Car car) {
         int position = getElementPosition(car, array.length);
         if (array[position] == null) {
             return false;
@@ -64,11 +64,9 @@ public class CarHashSet implements CarSet {
         return false;
     }
 
-
-
     @Override
     public int size() {
-        return size();
+        return size;
     }
 
     @Override
@@ -78,15 +76,15 @@ public class CarHashSet implements CarSet {
     }
 
     private void increaseArray() {
-        Entry[] newArray = new Entry[array.length * 2 ];
+        Entry[] newArray = new Entry[array.length * 2];
         for (Entry entry : array) {
-            Entry exsitedElement = entry;
-            while (exsitedElement != null) {
-                add(exsitedElement.value, newArray);
-                exsitedElement = exsitedElement.next;
+            Entry existedElement = entry;
+            while (existedElement != null) {
+                add(existedElement.value, newArray);
+                existedElement = existedElement.next;
             }
         }
-
+        array = newArray;
     }
 
     private int getElementPosition(Car car, int arrayLength) {
@@ -102,5 +100,4 @@ public class CarHashSet implements CarSet {
             this.next = next;
         }
     }
-
 }
